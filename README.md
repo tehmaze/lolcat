@@ -11,3 +11,15 @@ Usage and examples
 ==================
 
 ![](https://github.com/tehmaze/lolcat/raw/master/lolcat.png)
+
+
+Demo
+====
+
+Check out the ASCII cast at http://ascii.io/a/1563
+
+
+Bugs
+====
+
+https://github.com/tehmaze/lolcat/issues
