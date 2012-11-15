@@ -148,10 +148,18 @@ def run():
     parser.add_option('-f', '--force', action='store_true', default=False,
         help='Force colour even when stdout is not a tty')
 
+    parser.add_option('-3', action='store_const', dest='mode', const=8,
+        help='Force 3 bit colour mode')
+    parser.add_option('-4', action='store_const', dest='mode', const=16,
+        help='Force 4 bit colour mode')
+    parser.add_option('-8', action='store_const', dest='mode', const=256,
+        help='Force 8 bit colour mode')
+
     options, args = parser.parse_args()
     options.os = random.randint(0, 256) if options.seed == 0 else options.seed
+    options.mode = options.mode or detect_mode()
 
-    lolcat = LolCat(mode=detect_mode())
+    lolcat = LolCat(mode=options.mode)
 
     if not args:
         args = ['-']
