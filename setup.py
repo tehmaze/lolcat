@@ -3,7 +3,7 @@
 from distutils.core import setup
 
 setup(name='lolcat',
-      version='0.42',
+      version='0.42.23',
       description='Rainbows and unicorns!',
       author='Wijnand Modderman-Lenstra',
       author_email='maze@pyth0n.org',
