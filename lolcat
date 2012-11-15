@@ -29,7 +29,7 @@ class LolCat(object):
         return sum(map(lambda c: (c[0] - c[1]) ** 2,
             zip(rgb1, rgb2)))
 
-    def ansi(self, rgb, background=False):
+    def ansi(self, rgb):
         r, g, b = rgb
 
         if self.mode in (8, 16):
@@ -38,7 +38,7 @@ class LolCat(object):
             matches.sort()
             color = matches[0][1]
 
-            return '{}{}'.format(4 if background else 3, color)
+            return '3%d' % (color,)
         else:
             gray_possible = True
             sep = 2.5
@@ -56,10 +56,10 @@ class LolCat(object):
                 color = sum([16]+[int(6 * float(val)/256) * mod
                     for val, mod in zip(rgb, [36, 6, 1])])
 
-            return '{};5;{}'.format(48 if background else 38, color)
+            return '38;5;%d' % (color,)
 
     def wrap(self, *codes):
-        return '\x1b[{}m'.format(''.join(codes))
+        return '\x1b[%sm' % (''.join(codes),)
 
     def rainbow(self, freq, i):
         r = math.sin(freq * i) * 127 + 128
@@ -96,7 +96,7 @@ class LolCat(object):
             return
 
         for i in xrange(1, options.duration):
-            self.output.write('\x1b[{}D'.format(len(s)))
+            self.output.write('\x1b[%dD' % (len(s),))
             self.output.flush()
             options.os += options.spread
             self.println_plain(s, options)
@@ -147,12 +147,12 @@ def run():
         help='Animation speed')
     parser.add_option('-f', '--force', action='store_true', default=False,
         help='Force colour even when stdout is not a tty')
-    
+
     options, args = parser.parse_args()
     options.os = random.randint(0, 256) if options.seed == 0 else options.seed
 
     lolcat = LolCat(mode=detect_mode())
-    
+
     if not args:
         args = ['-']
 
