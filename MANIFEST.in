@@ -1,0 +1,4 @@
+include lolcat
+include *.md
+include *.png
+include *.py
