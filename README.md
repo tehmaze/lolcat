@@ -29,7 +29,7 @@ Usage and examples
 Demo
 ====
 
-Check out the ASCII cast at http://ascii.io/a/1563
+Check out the ASCII cast at https://asciinema.org/a/1563
 
 
 Bugs
