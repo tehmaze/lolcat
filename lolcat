@@ -8,6 +8,7 @@ import re
 import sys
 import time
 
+PY3 = sys.version_info >= (3,)
 
 # Reset terminal colors at exit
 def reset():
@@ -112,11 +113,11 @@ class LolCat(object):
             time.sleep(1.0 / options.speed)
 
     def println_plain(self, s, options):
-        for i, c in enumerate(s.decode(options.charset)):
+        for i, c in enumerate(s if PY3 else s.decode(options.charset_py2)):
             rgb = self.rainbow(options.freq, options.os + i / options.spread)
             self.output.write(''.join([
                 self.wrap(self.ansi(rgb)),
-                c.encode(options.charset),
+                c if PY3 else c.encode(options.charset_py2),
             ]))
 
 
@@ -164,8 +165,8 @@ def run():
     parser.add_option('-8', action='store_const', dest='mode', const=256,
         help='Force 8 bit colour mode')
 
-    parser.add_option('-c', '--charset', default='utf-8',
-            help='Manually set a charset to convert from')
+    parser.add_option('-c', '--charset-py2', default='utf-8',
+            help='Manually set a charset to convert from, for python 2.7')
 
     options, args = parser.parse_args()
     options.os = random.randint(0, 256) if options.seed == 0 else options.seed
