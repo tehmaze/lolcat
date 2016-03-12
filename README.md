@@ -2,7 +2,7 @@ LOLcat
 ======
 
 Straight Python port of the Ruby version at https://github.com/busyloop/lolcat/
-using not even half the code and no external dependancies.
+but with 100% more fun, because, hey, it’s not Ruby. There are no external dependancies..
 
 It's a tool like cat, with added lulz.
 
@@ -35,4 +35,4 @@ Check out the ASCII cast at https://asciinema.org/a/1563
 Bugs
 ====
 
-https://github.com/tehmaze/lolcat/issues
+Send a PR.
