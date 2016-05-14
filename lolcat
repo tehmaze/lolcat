@@ -187,8 +187,11 @@ def run():
         if filename == '-':
             lolcat.cat(sys.stdin, options)
         else:
-            with open(filename, 'r') as fp:
-                lolcat.cat(fp, options)
+            try:
+                with open(filename, 'r') as fp:
+                    lolcat.cat(fp, options)
+            except IOError:
+                pass
 
 if __name__ == '__main__':
     sys.exit(run())
