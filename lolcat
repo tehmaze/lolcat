@@ -119,11 +119,11 @@ class LolCat(object):
             time.sleep(1.0 / options.speed)
 
     def println_plain(self, s, options):
-        for i, c in enumerate(s if PY3 else s.decode(options.charset_py2)):
+        for i, c in enumerate(s if PY3 else s.decode(options.charset_py2, 'replace')):
             rgb = self.rainbow(options.freq, options.os + i / options.spread)
             self.output.write(''.join([
                 self.wrap(self.ansi(rgb)),
-                c if PY3 else c.encode(options.charset_py2),
+                c if PY3 else c.encode(options.charset_py2, 'replace'),
             ]))
 
 
@@ -187,8 +187,12 @@ def run():
         if filename == '-':
             lolcat.cat(sys.stdin, options)
         else:
-            with open(filename, 'r') as fp:
-                lolcat.cat(fp, options)
+            try:
+                with open(filename, 'r') as fp:
+                    lolcat.cat(fp, options)
+            except IOError:
+                print(u"{}: No such file or directory".format(filename))
+                pass
 
 if __name__ == '__main__':
     sys.exit(run())
