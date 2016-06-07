@@ -146,6 +146,7 @@ def detect_mode(term_hint='xterm-256color'):
 
 
 def run():
+    """Main entry point."""
     import optparse
 
     parser = optparse.OptionParser(usage=r'%prog [<options>] [file ...]')
@@ -188,11 +189,10 @@ def run():
             lolcat.cat(sys.stdin, options)
         else:
             try:
-                with open(filename, 'r') as fp:
-                    lolcat.cat(fp, options)
-            except IOError:
-                print(u"{}: No such file or directory".format(filename))
-                pass
+                with open(filename, 'r') as handle:
+                    lolcat.cat(handle, options)
+            except IOError as error:
+                sys.stderr.write(str(error) + '\n')
 
 if __name__ == '__main__':
     sys.exit(run())
