@@ -40,7 +40,7 @@ class stdoutWin():
         self.output = sys.stdout
         self.string = ''
         self.i = 0
-    
+
     def isatty(self):
         return self.output.isatty()
 
@@ -51,8 +51,8 @@ class stdoutWin():
         return self.output.flush()
 
     def print(self):
-        comand='echo|set /p="%s"' %(self.string)
-        os.system(comand)
+        string = 'echo|set /p="%s"' %(self.string)
+        os.system(string)
         self.i += 1
         self.string = ''
 
@@ -62,7 +62,7 @@ class stdoutWin():
 
 class LolCat(object):
     def __init__(self, mode=256, output=sys.stdout):
-        self.mode = mode
+        self.mode =mode
         self.output = output
 
     def _distance(self, rgb1, rgb2):
