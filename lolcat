@@ -21,16 +21,12 @@ from signal import signal, SIGPIPE, SIG_DFL
 # override default handler so no exceptions on SIGPIPE
 signal(SIGPIPE, SIG_DFL)
 
-# override default handler so no exceptions on SIGPIPE
-signal(SIGPIPE, SIG_DFL)
-
 # Reset terminal colors at exit
 def reset():
     sys.stdout.write('\x1b[0m')
     sys.stdout.flush()
 
 atexit.register(reset)
-
 
 STRIP_ANSI = re.compile(r'\x1b\[(\d+)(;\d+)?(;\d+)?[m|K]')
 COLOR_ANSI = (
@@ -207,7 +203,6 @@ def run():
         help='Animation speed')
     parser.add_option('-f', '--force', action='store_true', default=False,
         help='Force colour even when stdout is not a tty')
-
     parser.add_option('-3', action='store_const', dest='mode', const=8,
         help='Force 3 bit colour mode')
     parser.add_option('-4', action='store_const', dest='mode', const=16,
