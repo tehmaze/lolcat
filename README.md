@@ -6,7 +6,7 @@ but with 100% more fun, because, hey, it’s not Ruby. There are no external dep
 
 It's a tool like cat, with added lulz.
 
-Forked from https://github.com/
+Forked from https://github.com/tehmaze/lolcat
 
 Pulled Windows Support from https://github.com/naturalBornPixel/lolcat_windows
 
