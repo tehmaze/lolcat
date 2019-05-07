@@ -1,10 +1,13 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
-# "THE BEER-WARE LICENSE" (Revision 43~maze)
+# "THE BEER-WARE LICENSE" (Revision 43~rainbow)
 #
 # <maze@pyth0n.org> wrote these files. As long as you retain this notice you
 # can do whatever you want with this stuff. If we meet some day, and you think
 # this stuff is worth it, you can buy me a beer in return.
+#
+# <trix@basement.net> removed Python2 support and made animated output colors
+# flow better in final render
 
 import atexit
 import math
@@ -13,8 +16,6 @@ import random
 import re
 import sys
 import time
-
-PY3 = sys.version_info >= (3,)
 
 # Reset terminal colors at exit
 def reset():
@@ -94,15 +95,23 @@ class LolCat(object):
         if options.animate:
             self.output.write('\x1b[?25h')
 
+    def colzero(self, s):
+        self.output.write('\x1b[%dD' % (len(s),))
+        self.output.flush()
+        
     def println(self, s, options):
         s = s.rstrip()
         if options.force or self.output.isatty():
             s = STRIP_ANSI.sub('', s)
-
+        
         if options.animate:
+            saveoos = options.os
             self.println_ani(s, options)
-        else:
-            self.println_plain(s, options)
+            options.os = saveoos
+            self.colzero(s)
+
+
+        self.println_plain(s, options)
 
         self.output.write('\n')
         self.output.flush()
@@ -112,18 +121,16 @@ class LolCat(object):
             return
 
         for i in range(1, options.duration):
-            self.output.write('\x1b[%dD' % (len(s),))
-            self.output.flush()
+            self.colzero(s)
             options.os += options.spread
             self.println_plain(s, options)
             time.sleep(1.0 / options.speed)
 
     def println_plain(self, s, options):
-        for i, c in enumerate(s if PY3 else s.decode(options.charset_py2, 'replace')):
+        for i, c in enumerate(s):
             rgb = self.rainbow(options.freq, options.os + i / options.spread)
             self.output.write(''.join([
-                self.wrap(self.ansi(rgb)),
-                c if PY3 else c.encode(options.charset_py2, 'replace'),
+                self.wrap(self.ansi(rgb)),c,
             ]))
 
 
@@ -171,9 +178,6 @@ def run():
         help='Force 4 bit colour mode')
     parser.add_option('-8', action='store_const', dest='mode', const=256,
         help='Force 8 bit colour mode')
-
-    parser.add_option('-c', '--charset-py2', default='utf-8',
-            help='Manually set a charset to convert from, for python 2.7')
 
     options, args = parser.parse_args()
     options.os = random.randint(0, 256) if options.seed == 0 else options.seed
