@@ -21,6 +21,9 @@ from signal import signal, SIGPIPE, SIG_DFL
 # override default handler so no exceptions on SIGPIPE
 signal(SIGPIPE, SIG_DFL)
 
+# override default handler so no exceptions on SIGPIPE
+signal(SIGPIPE, SIG_DFL)
+
 # Reset terminal colors at exit
 def reset():
     sys.stdout.write('\x1b[0m')
