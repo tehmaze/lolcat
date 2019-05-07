@@ -16,6 +16,10 @@ import random
 import re
 import sys
 import time
+from signal import signal, SIGPIPE, SIG_DFL
+
+# override default handler so no exceptions on SIGPIPE
+signal(SIGPIPE, SIG_DFL)
 
 # Reset terminal colors at exit
 def reset():
@@ -135,11 +139,11 @@ class LolCat(object):
             options.os = saveoos
             self.colzero(s)
 
-
         self.println_plain(s, options)
 
         self.output.write('\n')
         self.output.flush()
+
         if os.name == 'nt':
             self.output.println()
 
@@ -221,14 +225,18 @@ def run():
         args = ['-']
 
     for filename in args:
-        if filename == '-':
-            lolcat.cat(sys.stdin, options)
-        else:
-            try:
-                with open(filename, 'r') as handle:
+        try:
+            if filename == '-':
+                lolcat.cat(sys.stdin, options)
+            else:
+                with open(filename, 'r', errors='backslashreplace') as handle:
                     lolcat.cat(handle, options)
-            except IOError as error:
-                sys.stderr.write(str(error) + '\n')
+        except IOError as error:
+            sys.stderr.write(str(error) + '\n')
+        except KeyboardInterrupt:
+            sys.stderr.write('\n')
+            # exit 130 for terminated-by-ctrl-c, from http://tldp.org/LDP/abs/html/exitcodes.html
+            return 130
 
 if __name__ == '__main__':
     sys.exit(run())

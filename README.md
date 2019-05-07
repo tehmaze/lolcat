@@ -10,6 +10,8 @@ Forked from https://github.com/
 
 Pulled Windows Support from https://github.com/naturalBornPixel/lolcat_windows
 
+Pulled in error handling from https://github.com/arathkone/lolcat
+
 
 Installing
 ==========
