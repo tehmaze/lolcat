@@ -7,7 +7,7 @@
 # this stuff is worth it, you can buy me a beer in return.
 #
 # <trix@basement.net> removed Python2 support and made animated output colors
-# flow better in final render
+# flow better in final render  
 
 import atexit
 import math
@@ -36,6 +36,31 @@ COLOR_ANSI = (
     (0x5c, 0x5c, 0xff), (0xff, 0x00, 0xff),
     (0x00, 0xff, 0xff), (0xff, 0xff, 0xff),
 )
+
+class stdoutWin():
+    def __init__(self):
+        self.output = sys.stdout
+        self.string = ''
+        self.i = 0
+
+    def isatty(self):
+        return self.output.isatty()
+
+    def write(self,s):
+        self.string = self.string + s
+
+    def flush(self):
+        return self.output.flush()
+
+    def print(self):
+        string = 'echo|set /p="%s"' %(self.string)
+        os.system(string)
+        self.i += 1
+        self.string = ''
+
+    def println(self):
+        print()
+        self.print()
 
 class LolCat(object):
     def __init__(self, mode=256, output=sys.stdout):
@@ -115,6 +140,8 @@ class LolCat(object):
 
         self.output.write('\n')
         self.output.flush()
+        if os.name == 'nt':
+            self.output.println()
 
     def println_ani(self, s, options):
         if not s:
@@ -132,6 +159,8 @@ class LolCat(object):
             self.output.write(''.join([
                 self.wrap(self.ansi(rgb)),c,
             ]))
+        if os.name == 'nt':
+            self.output.print()
 
 
 def detect_mode(term_hint='xterm-256color'):
@@ -183,7 +212,10 @@ def run():
     options.os = random.randint(0, 256) if options.seed == 0 else options.seed
     options.mode = options.mode or detect_mode()
 
-    lolcat = LolCat(mode=options.mode)
+    if os.name == 'nt':
+        lolcat = LolCat(mode=options.mode,output=stdoutWin())
+    else:
+        lolcat = LolCat(mode=options.mode)
 
     if not args:
         args = ['-']

@@ -2,9 +2,13 @@ LOLcat
 ======
 
 Straight Python port of the Ruby version at https://github.com/busyloop/lolcat/
-but with 100% more fun, because, hey, it’s not Ruby. There are no external dependancies..
+but with 100% more fun, because, hey, it’s not Ruby. There are no external dependencies...
 
 It's a tool like cat, with added lulz.
+
+Forked from https://github.com/
+
+Pulled Windows Support from https://github.com/naturalBornPixel/lolcat_windows
 
 
 Installing
