@@ -45,7 +45,7 @@ Send a PR.
 '''
 
 setup(name='lolcat',
-      version='1.3',
+      version='1.4',
       description='Rainbows and unicorns!',
       long_description=LONG_DESCRIPTION,
       long_description_content_type='text/markdown',
