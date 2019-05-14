@@ -6,6 +6,8 @@
 # can do whatever you want with this stuff. If we meet some day, and you think
 # this stuff is worth it, you can buy me a beer in return.
 
+from __future__ import print_function
+
 import atexit
 import math
 import os
@@ -40,6 +42,7 @@ COLOR_ANSI = (
     (0x00, 0xff, 0xff), (0xff, 0xff, 0xff),
 )
 
+
 class stdoutWin():
     def __init__(self):
         self.output = sys.stdout
@@ -55,7 +58,7 @@ class stdoutWin():
     def flush(self):
         return self.output.flush()
 
-    def print(self):
+    def prints(self):
         string = 'echo|set /p="%s"' %(self.string)
         os.system(string)
         self.i += 1
@@ -63,7 +66,8 @@ class stdoutWin():
 
     def println(self):
         print()
-        self.print()
+        self.prints()
+
 
 class LolCat(object):
     def __init__(self, mode=256, output=sys.stdout):
