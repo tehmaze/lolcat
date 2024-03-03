@@ -124,14 +124,22 @@ class LolCat(object):
         if options.animate:
             self.output.write('\x1b[?25l')
 
-        for line in fd:
+        new_line = True
+        fdr = fd.read()
+        if not '\n' in fdr:
+            new_line=False
+
+        if '\n' == fdr[-1:]:
+            fdr = fdr[:-1]
+
+        for line in fdr.split('\n'):
             options.os += 1
-            self.println(line, options)
+            self.println(line, options, new_line=new_line)
 
         if options.animate:
             self.output.write('\x1b[?25h')
 
-    def println(self, s, options):
+    def println(self, s, options, new_line=True):
         s = s.rstrip()
         if options.force or self.output.isatty():
             s = STRIP_ANSI.sub('', s)
@@ -141,9 +149,10 @@ class LolCat(object):
         else:
             self.println_plain(s, options)
 
-        self.output.write('\n')
+        if new_line:
+            self.output.write('\n')
         self.output.flush()
-        if os.name == 'nt':
+        if new_line and os.name == 'nt':
             self.output.println()
 
     def println_ani(self, s, options):
